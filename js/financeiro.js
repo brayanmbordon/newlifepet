@@ -65,7 +65,7 @@ function linha(c) {
 }
 
 async function renovar(id) {
-  await q(sb.from('clientes').update({ pag: 'Pendente', forma: null, dp: null, criado: hoje() }).eq('id', id));
+  await q(sb.from('pets').update({ pag: 'Pendente', forma: null, dp: null, criado: hoje() }).eq('id', id));
   await atualizar();
 }
 

@@ -68,6 +68,15 @@ button.p { background: var(--pr); color: #fff; border-color: var(--pr); }
 .bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
 .card { background: var(--card); border: 1px solid var(--bd); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .card.oc { opacity: .55; }
+
+/* ===== Cadastro: grupo de pets por tutor ===== */
+.tutor-grupo { margin-bottom: 16px; }
+.tutor-cab { background: var(--dk); color: #fff; border-radius: 12px 12px 0 0; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tutor-cab small { color: var(--ac); }
+.tutor-cab button { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.25); }
+.tutor-pets { border: 1px solid var(--bd); border-top: 0; border-radius: 0 0 12px 12px; padding: 8px 8px 0; }
+.tutor-pets .card { margin-bottom: 8px; }
+.pet-bloco { border: 1px solid var(--bd); border-radius: 10px; padding: 10px; margin-bottom: 10px; background: var(--bg); }
 .r { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .tag { background: var(--bg); border: 1px solid var(--bd); border-radius: 20px; padding: 2px 9px; font-size: 12px; }
 .tag.ok { background: #d5f5e0; color: #146c36; border-color: #9ad8b2; }

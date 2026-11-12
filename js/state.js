@@ -3,8 +3,12 @@ import { sb } from './supabase.js';
 import { hoje } from './utils.js';
 import { render } from './ui.js';
 
-// Dados do banco
-export const S = { clientes: [], agendamentos: [], pagamentos: [], perfis: [] };
+// Dados "crus" do banco (uma tabela cada)
+export const S = { tutores: [], pets: [], clientes: [], agendamentos: [], pagamentos: [], perfis: [] };
+// S.clientes é uma VISÃO: cada pet já vem com os dados do seu tutor juntos
+// (tutor, tel, email, end...), no mesmo formato que o resto do sistema usa
+// (agenda, financeiro, histórico). Isso existe porque um tutor pode ter mais
+// de um pet — cada pet é uma linha em S.clientes, mas o tutor é compartilhado.
 
 // Estado da tela
 export const X = {
@@ -38,11 +42,28 @@ async function todos(tabela) {
   }
 }
 
+// Monta S.clientes a partir de S.tutores + S.pets (ver comentário acima).
+function montarClientes() {
+  const tutoresPorId = new Map(S.tutores.map((t) => [t.id, t]));
+  S.clientes = S.pets.map((p) => {
+    const t = tutoresPorId.get(p.tutor_id) || { nome: '', tel: '', email: '', endereco: '' };
+    return {
+      id: p.id, tutor_id: Number(p.tutor_id),
+      tutor: t.nome, tel: t.tel, email: t.email, end: t.endereco,
+      pet: p.pet, raca: p.raca, obs: p.obs,
+      pac: p.pac, valor: Number(p.valor), pag: p.pag, taxi: p.taxi, oc: p.oculto,
+      criado: p.criado, forma: p.forma, dp: p.dp,
+    };
+  });
+}
+
 export async function carregar() {
-  const [clientes, agendamentos, pagamentos, perfis] = await Promise.all([
-    todos('clientes'), todos('agendamentos'), todos('pagamentos'), todos('perfis'),
+  const [tutores, pets, agendamentos, pagamentos, perfis] = await Promise.all([
+    todos('tutores'), todos('pets'), todos('agendamentos'), todos('pagamentos'), todos('perfis'),
   ]);
-  S.clientes = clientes.map((c) => ({ ...c, valor: Number(c.valor), end: c.endereco, oc: c.oculto }));
+  S.tutores = tutores;
+  S.pets = pets;
+  montarClientes();
   S.agendamentos = agendamentos;
   S.pagamentos = pagamentos.map((p) => ({ ...p, v: Number(p.v) }));
   S.perfis = perfis.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
@@ -55,10 +76,15 @@ export async function atualizar() {
 }
 
 export function limparEstado() {
-  S.clientes = []; S.agendamentos = []; S.pagamentos = []; S.perfis = [];
+  S.tutores = []; S.pets = []; S.clientes = []; S.agendamentos = []; S.pagamentos = []; S.perfis = [];
   X.usuario = null; X.sessao = null; X.aba = 'a'; X.erroLogin = '';
 }
 
+// Visão combinada (tutor + pet) — usada pela Agenda, Financeiro e Histórico.
 export const cliente = (id) => S.clientes.find((c) => c.id == id);
+// Linha "crua" do tutor — usada pelo Cadastro, para editar só os dados do tutor.
+export const tutor = (id) => S.tutores.find((t) => t.id == id);
+// Pets de um mesmo tutor, na ordem em que foram cadastrados.
+export const petsDoTutor = (tutorId) => S.pets.filter((p) => p.tutor_id == tutorId).sort((a, b) => a.id - b.id);
 // Um horário só fica livre se o agendamento foi cancelado ou o cliente pediu reagendamento.
 export const ativo = (a) => a.st !== 'Cancelado' && a.cf !== 'r';
