@@ -69,6 +69,34 @@ button.p { background: var(--pr); color: #fff; border-color: var(--pr); }
 .card { background: var(--card); border: 1px solid var(--bd); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .card.oc { opacity: .55; }
 
+/* ===== Filtros por período ===== */
+.filtro { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.seg { display: inline-flex; border: 1px solid var(--bd); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; border-right: 1px solid var(--bd); }
+.seg button:last-child { border-right: 0; }
+.seg .on { background: var(--pr); color: #fff; }
+.card.fe { border-left: 4px solid #25a85a; opacity: .8; }
+
+/* ===== Agenda: grade da semana (horários x dias) ===== */
+.gr table { min-width: 760px; table-layout: fixed; }
+.gr th, .gr td { padding: 2px; border: 1px solid var(--bd); white-space: nowrap; text-align: center; height: 30px; }
+.gr th.gr-hora { width: 56px; position: sticky; left: 0; background: var(--card); z-index: 1; font-size: 12px; color: var(--mu); font-weight: 600; }
+.gr-dia { width: 100%; background: var(--dk); color: #fff; border: 0; border-radius: 6px; padding: 4px; line-height: 1.15; }
+.gr th.hj .gr-dia { background: var(--pr); }
+.gr-dia small { display: block; font-size: 11px; color: var(--ac); }
+.gr th.hj .gr-dia small { color: #fff; }
+.gr td.hj { background: color-mix(in srgb, var(--pr) 6%, transparent); }
+.gr td.gr-passou { background: repeating-linear-gradient(45deg, transparent 0 6px, color-mix(in srgb, var(--mu) 10%, transparent) 6px 12px); }
+.gr-livre { width: 100%; border: 1px dashed var(--bd); background: transparent; color: var(--mu); font-size: 12px; padding: 3px; border-radius: 6px; }
+.gr-livre:hover { border-color: var(--pr); color: var(--pr); background: color-mix(in srgb, var(--pr) 8%, transparent); }
+.gr-pet { display: block; width: 100%; font-size: 12px; padding: 3px 5px; border-radius: 6px; background: var(--bg); border: 1px solid var(--bd); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.gr-pet + .gr-pet { margin-top: 2px; }
+.gr-pet.conf { background: #dff1ff; color: #0b5c8f; border-color: #9fcbea; }
+.gr-pet.and { background: #fff0d6; color: #8a5600; border-color: #f0cf8f; }
+.gr-pet.ok { background: #d5f5e0; color: #146c36; border-color: #9ad8b2; }
+.legenda { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; }
+.legenda .gr-pet { display: inline-block; width: auto; font-size: 12px; padding: 2px 8px; }
+
 /* ===== Cadastro: grupo de pets por tutor ===== */
 .tutor-grupo { margin-bottom: 16px; }
 .tutor-cab { background: var(--dk); color: #fff; border-radius: 12px 12px 0 0; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -91,7 +119,7 @@ th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--bd)
 .grafico { min-width: 600px; }
 
 /* ===== Janelas (modal), formulários e avisos ===== */
-#m { display: none; position: fixed; inset: 0; background: #0008; z-index: 20; align-items: center; justify-content: center; padding: 14px; }
+#m { display: none; position: fixed; inset: 0; background: #0008; z-index: 50; align-items: center; justify-content: center; padding: 14px; }
 #m.show { display: flex; }
 .box { background: var(--card); border-radius: 14px; padding: 16px; max-width: 520px; width: 100%; max-height: 90vh; overflow: auto; }
 .login-box { margin: 40px auto; }
@@ -104,5 +132,102 @@ th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--bd)
 .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
 .er { color: #c0392b; margin: 0; }
 @media (max-width: 520px) { .g { grid-template-columns: 1fr; } }
-#toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: #c0392b; color: #fff; padding: 10px 16px; border-radius: 10px; z-index: 30; display: none; max-width: 90%; }
+#toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: #c0392b; color: #fff; padding: 10px 16px; border-radius: 10px; z-index: 60; display: none; max-width: 90%; }
 #toast.show { display: block; }
+
+/* ===== Navegação com ícones ===== */
+nav button .i { margin-right: 6px; }
+
+/* ===== Menu "⋯" ===== */
+.mn { position: relative; }
+.mn > summary { list-style: none; cursor: pointer; border: 1px solid var(--bd); border-radius: 8px; padding: 7px 12px; background: var(--card); user-select: none; font-weight: 700; }
+.mn > summary::-webkit-details-marker { display: none; }
+.mn[open] > summary { border-color: var(--pr); color: var(--pr); }
+.mn > div { position: absolute; right: 0; top: calc(100% + 4px); z-index: 15; background: var(--card); border: 1px solid var(--bd); border-radius: 10px; box-shadow: 0 6px 20px #0003; min-width: 230px; padding: 4px; display: flex; flex-direction: column; }
+.mn > div > button, .mn > div > a { border: 0; background: none; text-align: left; padding: 9px 10px; border-radius: 6px; color: var(--tx); text-decoration: none; white-space: nowrap; }
+.mn > div > button:hover, .mn > div > a:hover { background: var(--bg); }
+.perigo { color: #c0392b !important; }
+
+/* ===== Agenda: cartões enxutos e resumo ===== */
+.resumo { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.resumo .tag { font-size: 13px; padding: 4px 10px; }
+.card.ag { align-items: center; }
+.ag-info { display: flex; gap: 12px; align-items: center; }
+.ag-hora { font-size: 18px; background: var(--bg); border: 1px solid var(--bd); border-radius: 8px; padding: 6px 8px; min-width: 64px; text-align: center; }
+.st { border-radius: 999px; font-size: 13px; font-weight: 600; padding: 6px 12px; background: var(--bg); }
+.st span { opacity: .6; }
+.st.and { background: #fff0d6; color: #8a5600; border-color: #f0cf8f; }
+.st.ok { background: #d5f5e0; color: #146c36; border-color: #9ad8b2; }
+.st.taxi { background: #e9eefc; color: #2b4aa0; border-color: #b8c6ef; }
+.st:disabled { cursor: default; opacity: 1; }
+.btn.ic { padding: 7px 10px; }
+.dia-cab { margin: 14px 0 6px; padding-bottom: 4px; border-bottom: 2px solid var(--ac); display: flex; justify-content: space-between; align-items: baseline; }
+
+/* ===== Listas dentro das janelas (lembretes, cobrança, rota) ===== */
+.lista { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+.lin { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--bd); border-radius: 10px; background: var(--card); }
+.lin.enviado { opacity: .5; }
+.lin.enviado .btn::after { content: ' ✓'; }
+.card-lista { margin-top: 0; }
+
+/* ===== Financeiro ===== */
+.seg.sub { margin: 4px 0 12px; display: flex; }
+.seg.sub button { flex: 1; }
+.filtro input[type="search"] { flex: 1; min-width: 200px; }
+.card.fin { align-items: center; padding: 10px 12px; }
+.card.fin .valor { min-width: 90px; text-align: right; }
+.dobra { margin-top: 12px; }
+.dobra > summary { cursor: pointer; padding: 10px 12px; background: var(--card); border: 1px solid var(--bd); border-radius: 12px; font-weight: 600; margin-bottom: 8px; }
+
+/* ===== Cadastro: grupos recolhíveis ===== */
+details.tutor-grupo > summary { list-style: none; cursor: pointer; }
+details.tutor-grupo > summary::-webkit-details-marker { display: none; }
+details.tutor-grupo:not([open]) > summary { border-radius: 12px; }
+.tutor-grupo { margin-bottom: 8px; }
+.seta { transition: transform .15s; margin-left: 4px; }
+details[open] .seta { transform: rotate(180deg); }
+.tutor-extra { margin: 0 4px 8px; font-size: 13px; }
+.pont { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #f2a33a; vertical-align: middle; }
+
+/* ===== Celular ===== */
+@media (max-width: 700px) {
+  header { padding: 8px 12px; }
+  header small { display: none; }
+  header b { font-size: 16px; }
+  .logo { width: 40px; height: 40px; border-radius: 10px; }
+  main { padding: 12px 12px 90px; }
+  footer { padding-bottom: 86px; }
+
+  /* Abas viram barra fixa no rodapé */
+  nav { position: fixed; top: auto; bottom: 0; left: 0; right: 0; z-index: 10; border-bottom: 0; border-top: 1px solid var(--bd);
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px)); gap: 2px; overflow: visible; box-shadow: 0 -2px 10px #0002; }
+  nav button { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; gap: 1px; border: 0; background: none; font-size: 11px; padding: 5px 2px; color: var(--mu); }
+  nav button .i { margin: 0; font-size: 20px; filter: grayscale(.6); }
+  nav .on { background: color-mix(in srgb, var(--pr) 12%, transparent); color: var(--pr); font-weight: 700; }
+  nav .on .i { filter: none; }
+
+  .btn.ic span { display: none; }
+  .card.ag .r, .card.fin .r { width: 100%; justify-content: flex-end; }
+  .ag-hora { font-size: 15px; min-width: 54px; padding: 4px 6px; }
+  .card.fin .valor { margin-right: auto; text-align: left; min-width: 0; }
+  .tutor-cab .r button { padding: 5px 8px; font-size: 13px; }
+  .filtro .seg { width: 100%; display: flex; }
+  .filtro .seg button { flex: 1; padding: 7px 4px; }
+  .k { grid-template-columns: 1fr 1fr; }
+  .k div:first-child:nth-last-child(odd) { grid-column: 1 / -1; }
+  .k b { font-size: 17px; }
+  .mn > div { min-width: 210px; }
+}
+
+/* ===== Pacote por ciclo: etiqueta "2/4" e cartão ===== */
+.nb { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #e9eefc; color: #2b4aa0; border: 1px solid #b8c6ef; line-height: 1.5; vertical-align: middle; cursor: pointer; }
+.nb.ult { background: #fff0d6; color: #8a5600; border-color: #f0cf8f; }
+.nb.fora { background: #fde2df; color: #a5281b; border-color: #f2b1a9; }
+.gr-pet small { font-weight: 500; opacity: .7; }
+.bolas { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; margin: 12px 0; }
+.bola { aspect-ratio: 1; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 2px dashed var(--bd); background: var(--bg); line-height: 1.2; padding: 6px; }
+.bola b { font-size: 18px; }
+.bola small { font-size: 11px; }
+.bola.agendado { border: 2px solid var(--ac); background: color-mix(in srgb, var(--ac) 10%, var(--card)); }
+.bola.feito { border: 2px solid var(--pr); background: var(--pr); color: #fff; }
+.bola.feito small { color: #e8f7f6; }

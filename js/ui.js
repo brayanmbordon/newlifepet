@@ -43,6 +43,10 @@ export function modal(html, botoes = []) {
 export const fecharModal = () => { $('#m').className = ''; };
 export const modalAberto = () => $('#m').className === 'show';
 
+// --- Menu "⋯" (opções secundárias) ----------------------------------------
+export const menu = (itens, rotulo = '⋯') =>
+  `<details class="mn"><summary title="Mais opções">${rotulo}</summary><div>${itens.filter(Boolean).join('')}</div></details>`;
+
 // --- Eventos ----------------------------------------------------------------
 // Os botões da tela não usam onclick="...". Eles trazem data-click="nome" (ou
 // data-change / data-enter) e cada módulo registra o que fazer com acoes({ nome: funcao }).
@@ -52,13 +56,21 @@ export const acoes = (novas) => Object.assign(mapa, novas);
 async function despachar(tipo, ev) {
   const el = ev.target.closest?.(`[data-${tipo}]`);
   if (!el) return;
+  // Botão dentro do cabeçalho de um grupo recolhível: não abre/fecha o grupo
+  if (tipo === 'click' && el.tagName !== 'SUMMARY' && el.closest('summary')) ev.preventDefault();
   const funcao = mapa[el.dataset[tipo]];
   if (!funcao) return console.warn('Ação não registrada:', el.dataset[tipo]);
   try { await funcao(el.dataset, el, ev); } catch (x) { msgErro(x); }
 }
 
 export function iniciarEventos() {
-  document.addEventListener('click', (ev) => despachar('click', ev));
+  document.addEventListener('click', (ev) => {
+    // Fecha menus "⋯" abertos ao clicar fora ou ao escolher uma opção
+    document.querySelectorAll('details.mn[open]').forEach((d) => {
+      if (!d.contains(ev.target) || ev.target.closest('.mn > div')) d.open = false;
+    });
+    despachar('click', ev);
+  });
   document.addEventListener('change', (ev) => despachar('change', ev));
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') despachar('enter', ev); });
 }

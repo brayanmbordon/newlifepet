@@ -17,7 +17,19 @@ export const X = {
   aba: 'a',             // c = cadastro, a = agenda, h = histórico, f = financeiro, u = usuários
   dia: hoje(),          // dia exibido na agenda
   mostrarOcultos: false,
-  busca: '',            // filtro do histórico
+  agModo: 'd',          // agenda: d = dia, s = semana
+  busca: '',            // filtro do histórico (texto)
+  histModo: 't',        // histórico: d, s, m ou t (todos)
+  histRef: hoje(),
+  finModo: 'm',         // financeiro (recebimentos): d, s, m ou t
+  finRef: hoje(),
+  finForma: '',         // '' = todas as formas de pagamento
+  finAba: 'p',          // financeiro: p = pendentes, r = recebimentos, g = gráfico
+  finBusca: '',
+  finPac: '',
+  cadBusca: '',         // cadastro: busca e filtro rápido
+  cadFiltro: '',        // '' | pacotes | avulsos | pendentes
+  cadAbertos: new Set(),// grupos de tutor abertos
   emailLogin: '',
   erroLogin: '',
   manter: false,        // caixa "Manter este dispositivo conectado"
@@ -53,6 +65,7 @@ function montarClientes() {
       pet: p.pet, raca: p.raca, obs: p.obs,
       pac: p.pac, valor: Number(p.valor), pag: p.pag, taxi: p.taxi, oc: p.oculto,
       criado: p.criado, forma: p.forma, dp: p.dp,
+      diaSem: p.dia_sem ?? null, horaFixa: p.hora_fixa || '', servFixo: p.serv_fixo || 'Banho',
     };
   });
 }

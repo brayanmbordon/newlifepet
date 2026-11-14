@@ -30,12 +30,19 @@ function desenhar() {
     return;
   }
   if (X.aba === 'u' && u.role !== 'admin') X.aba = 'a';
-  const abas = [['c', 'Cadastro'], ['a', 'Agendamento'], ['h', 'Histórico'], ['f', 'Financeiro'], ...(u.role === 'admin' ? [['u', 'Usuários']] : [])];
-  $('#tabs').innerHTML = abas.map(([id, nome]) => `<button class="${X.aba === id ? 'on' : ''}" data-click="aba" data-aba="${id}">${nome}</button>`).join('');
+  const abas = [['c', 'Cadastro', '🐾'], ['a', 'Agenda', '📅'], ['h', 'Histórico', '🕘'], ['f', 'Financeiro', '💰'], ...(u.role === 'admin' ? [['u', 'Usuários', '👥']] : [])];
+  $('#tabs').innerHTML = abas.map(([id, nome, ic]) => `<button class="${X.aba === id ? 'on' : ''}" data-click="aba" data-aba="${id}"><span class="i">${ic}</span><span>${nome}</span></button>`).join('');
   $('#v').innerHTML = TELAS[X.aba]();
 }
 
-acoes({ aba: (d) => { X.aba = d.aba; render(); } });
+acoes({ aba: (d) => { X.aba = d.aba; render(); window.scrollTo(0, 0); } });
+
+// Guarda quais grupos de tutor estão abertos no Cadastro (para continuarem abertos ao redesenhar)
+document.addEventListener('toggle', (ev) => {
+  const tid = ev.target.dataset?.tid;
+  if (!tid) return;
+  if (ev.target.open) X.cadAbertos.add(Number(tid)); else X.cadAbertos.delete(Number(tid));
+}, true);
 
 definirRenderizador(desenhar);
 iniciarEventos();
